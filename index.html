@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en" ng-app="app">
+  <head>
+    <meta charset="utf-8">
+    <title>Basic Angular App</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <!-- mobile native feel -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+    <!-- angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+
+
+    <!-- UI elements you know you'll need:  http://angular-ui.github.io/bootstrap/ -->
+    <script src="js/ui-bootstrap-tpls-0.11.2.min.js"></script>
+
+    <!-- see note under http://angular-ui.github.io/bootstrap/#getting_started - CSS -->
+    <style>
+      .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+    </style>
+
+    <!-- angular-xeditable elements: http://vitalets.github.io/angular-xeditable/ -->
+    <link href="css/xeditable.css" rel="stylesheet">
+    <script src="js/xeditable.js"></script>
+
+
+    <script>
+    angular.module('app', ['ui.bootstrap', 'xeditable'])
+    .controller('AppCtrl', ['$scope', function($scope) {
+
+      $scope.user = {
+        "name": "awesome user",
+        "color": "#6a4415",
+        "dob": new Date(1914, 5, 26)
+      };
+
+      $scope.alerts = [
+        { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
+        { type: 'success', msg: 'Well done! You successfully read this important alert message.' }
+      ];
+
+      $scope.addAlert = function() {
+        $scope.alerts.push({msg: "Another alert!"});
+      };
+
+      $scope.closeAlert = function(index) {
+        $scope.alerts.splice(index, 1);
+      };
+    }])
+    .run(function(editableOptions) {
+      // Necessary for making the save/cancel form buttons display with the nice style
+      editableOptions.theme = 'bs3';
+    })
+    </script>
+  </head>
+  <body>
+    <div class="container" ng-controller="AppCtrl">
+      <h1>Basic bootstrap css + angular UI + in place editable forms</h1>
+      <p>This project includes all the base files in order to have a working base
+      angular page.  It does not specify how you may want to organize your files.</p>
+
+      <h2>Dynamic UI</h2>
+      <p>Example dynamic alerts are below:</p>
+      <div>
+        <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+        <button class='btn btn-default' ng-click="addAlert()">Add Alert</button>
+      </div>
+
+      <h2>Editable form fields</h2>
+      <p>Example editable forms are below:</p>
+      <table class="table table-bordered table-striped">
+        <tbody>
+          <tr>
+            <th class="text-nowrap" style="width: 40px;">User Name</th>
+            <td><a href="#" editable-text="user.name">{{ user.name || 'empty' }}</a></td>
+          </tr>
+          <tr>
+            <th class="text-nowrap" style="width: 40px;">Color</th>
+            <td><a href="#" editable-color="user.color">{{ user.color || 'empty' }}</a></td>
+          </tr>
+          <tr>
+            <th class="text-nowrap" style="width: 40px;">Date</th>
+            <td>
+              <a href="#" editable-bsdate="user.dob" e-datepicker-popup="dd-MMMM-yyyy">
+                {{ (user.dob | date:"yyyy-MM-dd") || 'empty' }}
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
